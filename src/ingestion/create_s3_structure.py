@@ -21,32 +21,47 @@ except s3.exceptions.BucketAlreadyOwnedByYou:
     logger.Error(f"Bucket Creation Failed due to BucketAlreadyOwnedByYou")
 
 folders = [
-    "raw/sensors/",
-    "raw/maintenance_logs/",
-    "raw/external/",
+    # RAW
+    "raw/customers/",
+    "raw/transactions/",
+    "raw/usage/",
+    "raw/support/",
+    "raw/labels/",
 
-    "quarantine/",
+    # QUARANTINE
+    "quarantine/schema_mismatch/",
+    "quarantine/null_threshold/",
+    "quarantine/range_violation/",
+    "quarantine/duplicates/",
 
+    # PROCESSED
+    "processed/base_table/",
     "processed/train/",
     "processed/validation/",
     "processed/test/",
 
+    # FEATURES
     "features/offline/",
     "features/online/",
 
-    "models/artifacts/",
+    # MODELS
+    "models/artifacts/churn/",
     "models/registry/",
 
-    "endpoints/logs/",
-
+    # PREDICTIONS
     "predictions/batch/",
     "predictions/realtime/",
 
+    # MONITORING
     "monitoring/data_drift/",
     "monitoring/model_quality/",
+    "monitoring/bias/",
 
+    # LOGS
+    "logs/ingestion/",
     "logs/glue/",
-    "logs/sagemaker/",
+    "logs/training/",
+    "logs/endpoints/",
     "logs/stepfunctions/",
 ]
 
