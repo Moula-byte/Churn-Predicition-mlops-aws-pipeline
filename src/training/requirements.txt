@@ -1,3 +1,6 @@
+numpy==1.23.5
+pandas==1.5.3
+xgboost==1.7.5
+pyarrow
+scikit-learn==1.2.1
 boto3
-xgboost
-scikit-learn

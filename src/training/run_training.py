@@ -2,7 +2,7 @@ import sagemaker
 import boto3
 import os
 from sagemaker.sklearn.estimator import SKLearn
-from xgboost import XGBClassifier
+
 
 from src.logger import setup_logger
 
@@ -15,13 +15,20 @@ ROLE = "arn:aws:iam::998331943727:role/SageMakerExecutionRole-MLProd"
 
 BUCKET = "ml-prod-pipeline"
 
-TRAIN_PATH = f"s3://{BUCKET}/processed/model_splits/train/"
-VAL_PATH   = f"s3://{BUCKET}/processed/model_splits/validation/"
+TRAIN_PATH = f"s3://{BUCKET}/processed/model_splits/train/snapshot_date=2026-01-29/"
+VAL_PATH   = f"s3://{BUCKET}/processed/model_splits/validation/snapshot_date=2026-01-29/"
 MODEL_PATH = f"s3://{BUCKET}/models/churn/xgboost/version=1/"
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-#training_code_dir = os.path.join(current_dir, "src", "training")
+# 1. Get the absolute path of the directory where run_training.py lives
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# 2. Join it to the subfolder containing your code
+# This ensures it works whether you run from CMD, PowerShell, or PyCharm
+#training_code_dir = os.path.join(BASE_DIR, "src", "training")
+
+logger.info(f"Looking for training code in: {BASE_DIR}")
+
 
 boto_session = boto3.Session(region_name=REGION)
 session = sagemaker.Session(boto_session=boto_session)
@@ -31,7 +38,7 @@ try:
 
     estimator = SKLearn(
         entry_point="train.py",  # The script name only
-        source_dir=current_dir,  # The folder containing the script
+        source_dir=BASE_DIR,  # The folder containing the script
         role=ROLE,
         instance_type="ml.m5.xlarge",
         instance_count=1,
